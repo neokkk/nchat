@@ -1,5 +1,5 @@
-const path = require('path');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path'),
+      HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: './src/index.js',
@@ -20,7 +20,7 @@ module.exports = {
         enforce: 'pre',
         test: /\.js$/,
         loader: 'eslint-loader',
-        exclude: /(node_modules)/
+        exclude: /node_modules/
       },
       {
         test: /\.html$/,
@@ -29,6 +29,11 @@ module.exports = {
             loader: "html-loader"
           }
         ]
+      },
+      {
+        test: /\.scss$/,
+        loaders: ["style-loader","css-loader?-minimize","sass-loader?outputStyle=compressed"],
+        exclude: /node_modules/
       }
     ]
   },

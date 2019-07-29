@@ -2,12 +2,14 @@ const express = require('express'),
       flash = require('connect-flash'),
       morgan = require('morgan'),
       cookieParser = require('cookie-parser'),
-      session = require('express-session');
+      session = require('express-session'),
+      passport = require('passport');
 
 require('dotenv').config();
 
-const db = require('./schemas'),
-      webSocket = require('./socket');
+const webSocket = require('./socket'),
+      passportConfig = require('./passport'),
+      { sequelize } = require('./models');
 
 const authRouter = require('./routes/auth'),
       roomRouter = require('./routes/room'),
@@ -23,7 +25,8 @@ const sessionMiddleware = session({
     }
 });
 
-db.connect();
+sequelize.sync();
+passportConfig(passport);
 
 app.set('port', process.env.PORT || 8020);
 
@@ -44,7 +47,7 @@ app.use((req, res, next) => {
     next(error);
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);

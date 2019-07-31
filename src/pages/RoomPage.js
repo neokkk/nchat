@@ -9,9 +9,9 @@ import ListPage from './ListPage';
 
 // const socket = io('localhost:8020');
 
-const RoomPage = props => {
-    console.log(props);
+const RoomPage = () => {
     const [input, setInput] = useState('');
+    const [inputArray, setInputArray] = useState([]);
 
     const handleChange = e => {
         setInput(e.target.value);
@@ -19,6 +19,8 @@ const RoomPage = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        setInputArray([...inputArray, input]);
 
         axios.post(`/room/id/chat`, { data: input });
     }
@@ -33,12 +35,12 @@ const RoomPage = props => {
                 <span>방 제목</span>
                 <span>방 부제</span>
             </nav>
+            <Chat />
             <form onSubmit={handleSubmit}>
                 <input type='file' />
                 <button><i>메뉴</i></button>
                 <textarea onChange={handleChange}></textarea>
             </form>
-            <Chat />
         </div>
     );
 }

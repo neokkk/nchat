@@ -18,6 +18,7 @@ const authRouter = require('./routes/auth'),
 const app = express();
 const sessionMiddleware = session({
     resave: false,
+    saveUninitialized: false,
     secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true,
@@ -28,7 +29,7 @@ const sessionMiddleware = session({
 sequelize.sync();
 passportConfig(passport);
 
-app.set('port', process.env.PORT || 8020);
+app.set('port', process.env.PORT || 5000);
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -42,12 +43,18 @@ app.use('/room', roomRouter);
 app.use('/user', userRouter);
 
 app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+app.use((req, res, next) => {
     const error = new Error('Not found');
     error.status = 404;
     next(error);
 });
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);
@@ -56,5 +63,3 @@ app.use((err, req, res) => {
 const server = app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트에서 대기중');
 });
-
-webSocket(server, app, sessionMiddleware);

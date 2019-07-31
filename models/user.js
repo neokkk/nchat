@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => (
     sequelize.define('user', {
         nick: {
             type: DataTypes.STRING(20),
@@ -16,5 +16,5 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: true,
         paranoid: true,
-    });
-}
+    })
+)

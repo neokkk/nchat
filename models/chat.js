@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => (
     sequelize.define('chat', {
         chat: {
             type: DataTypes.STRING(),
@@ -12,5 +12,5 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: true,
         paranoid: true,
-    });
-}
+    })
+)

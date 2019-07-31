@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('room', {
+module.exports = (sequelize, DataTypes) => (
+    sequelize.define('room', {
         name: {
             type: DataTypes.STRING(30),
             allowNull: false,
@@ -25,5 +25,5 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         timestamps: true,
         paranoid: true,
-    });
-}
+    })
+)

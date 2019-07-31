@@ -24,19 +24,27 @@ router.post('/join', async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
+    console.log(1);
+    console.log(req.body);
     passport.authenticate('local', (authError, user, info) => {
+        console.log(2);
+        console.log(user);
         if (authError) {
+            console.log(3);
             console.error(authError);
             next(authError);
         }
 
         if (!user) {
+            console.log(4);
             req.flash('loginError', info.message);
             res.redirect('/');
         }
 
         req.login(user, loginError => {
+            console.log(5);
             if (loginError) {
+                console.log(6);
                 console.error(loginError);
                 next(loginError);
             }

@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   entry: './src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
@@ -32,10 +32,13 @@ module.exports = {
         ]
       },
       {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.scss$/,
-        loaders: ["style-loader","css-loader?-minimize","sass-loader?outputStyle=compressed"],
-        exclude: /node_modules/
-      }
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
     ]
   },
   plugins: [

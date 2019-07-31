@@ -1,0 +1,28 @@
+$pink : #ea6c6c;
+$gray : #545454;
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .header-user {
+        color: $gray;
+        font-size: 13px;
+
+        span {
+            color: $pink;
+        }
+
+        a {
+            text-decoration: none;
+            margin-left: 10px;
+        }
+    }
+}

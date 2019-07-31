@@ -7,6 +7,8 @@ import Header from '../components/Header';
 import Chat from '../components/Chat';
 import ListPage from './ListPage';
 
+import '../style/RoomPage.scss';
+
 // const socket = io('localhost:8020');
 
 const RoomPage = () => {
@@ -31,16 +33,17 @@ const RoomPage = () => {
             <nav>
                 <Link to='/room/list'>방 나가기</Link>
                 <Route path='/room/list' exact component={ListPage} />
-                <span>방 번호</span>
-                <span>방 제목</span>
-                <span>방 부제</span>
+                <div className='room-info'>
+                    <span>방 번호</span>
+                    <span>방 제목</span>
+                    <span>방 부제</span>
+                </div>
             </nav>
-            <Chat />
             <form onSubmit={handleSubmit}>
                 <input type='file' />
-                <button><i>메뉴</i></button>
                 <textarea onChange={handleChange}></textarea>
             </form>
+            <Chat />
         </div>
     );
 }

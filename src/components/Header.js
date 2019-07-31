@@ -1,11 +1,15 @@
 import React from 'react';
 
+import '../style/Header.scss';
+
 const Header = () => {
     return (
         <header>
-            <img src='../../public/images/ball.png' />
-            <span>고난 님</span>
-            <a href='/auth/logout'>로그아웃</a>
+            <a href='/'><img src='../../public/images/ball.png' /></a>
+            <div className='header-user'>
+                <span>고난</span> 님
+                <a href='/auth/logout'>로그아웃</a>
+            </div>
         </header>
     );
 }

@@ -11,7 +11,11 @@ router.get('/list', isLoggedIn, async (req, res, next) => {
                   console.log('rooms');
                   console.log(rooms);
                   res.send(rooms);
-                });
+              })
+              .catch(err => {
+                  console.error(err);
+                  next(err);
+              });
 });
 
 module.exports = router;

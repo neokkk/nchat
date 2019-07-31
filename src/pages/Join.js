@@ -21,7 +21,7 @@ const JoinPage = () => {
             return;
         }
 
-        axios.post('http://localhost:5000/auth/join/validation', { data: { nick, email, pwd } })
+        axios.post('http://localhost:5000/auth/join', { data: { nick, email, pwd } })
              .then(result => {
                  console.log('result');
                  console.log(result);

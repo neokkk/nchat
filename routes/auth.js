@@ -7,11 +7,7 @@ const router = express.Router();
 const { User } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
-router.post('/join', isNotLoggedIn, (req, res, next) => {
-
-});
-
-router.post('/join/validation', async (req, res, next) => {
+router.post('/join', async (req, res, next) => {
     const { nick, email, pwd } = req.body.data;
     const hash = await bcrypt.hash(pwd, 12);
 

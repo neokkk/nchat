@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import io from 'socket.io-client';
 import axios from 'axios';
 
-import Header from '../components/Header';
 import Chat from '../components/Chat';
-import ListPage from './ListPage';
 
 import '../style/RoomPage.scss';
 
@@ -29,10 +27,8 @@ const RoomPage = () => {
 
     return (
         <div className='roomPage'>
-            <Header />
             <nav>
-                <Link to='/room/list'>방 나가기</Link>
-                <Route path='/room/list' exact component={ListPage} />
+                <Link to='/list'>방 나가기</Link>
                 <div className='room-info'>
                     <span>방 번호</span>
                     <span>방 제목</span>

@@ -38,15 +38,19 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 app.use(flash());
 
+app.use((req, res, next) => {
+    console.log('cors check!');
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Max-Age", 3600);
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
+
 app.use('/auth', authRouter);
 app.use('/room', roomRouter);
 app.use('/user', userRouter);
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
 
 app.use((req, res, next) => {
     const error = new Error('Not found');

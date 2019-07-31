@@ -17,16 +17,36 @@ $gray: #545454;
     }
 
     form {
+        font-size: 13px;
         width: 350px;
         display: flex;
         flex-direction: column;
+        
+        div {
+            display: flex;
+            justify-content: space-between;
+
+            .join-error {
+                opacity: 0.8;
+                color: $pink;
+                text-align: left;
+                margin: 0;
+            }
+
+            a {
+                color: $gray;
+                text-decoration: none;
+            }
+        }
 
         input {
             width: 100%;
             height: 50px;
+            border-style: none;
             border-radius: 10px;
+            border: 1px solid #c4c4c4;
             box-sizing: border-box;
-            margin-bottom: 5px;
+            margin-top: 5px;
             appearance: none;
             padding: 10px 20px;
 
@@ -36,14 +56,5 @@ $gray: #545454;
                 background-color: $pink;
             }
         }
-    }
-
-    .join-error {
-        width: 100%;
-        font-size: 13px;
-        opacity: 0.8;
-        color: $pink;
-        text-align: left;
-        margin: 0;
     }
 }

@@ -1,24 +1,28 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import LoginPage from '../pages/LoginPage';
-import JoinPage from '../pages/JoinPage';
+import Header from '../components/Header';
+import Login from '../pages/Login';
+import Join from '../pages/Join';
 import ListPage from '../pages/ListPage';
 import RoomPage from '../pages/RoomPage';
 import ErrorPage from '../pages/ErrorPage';
 
 const App = () => {
-    const user = 'null';
+    const user = null;
     
     return (
-        <Switch>
-            {user ? <Route path='/' exact component={ListPage} /> : <Route path='/' exact component={LoginPage} />}
-            <Route path='/login' component={LoginPage} />
-            <Route path='/join' component={JoinPage} />
-            <Route path='/room' exact component={RoomPage} />
-            <Route path='/room/list' component={ListPage} />
-            <Route component={ErrorPage} />
-        </Switch>
+        <>
+            {user ? <Header /> : null}
+            <Switch>
+                {user ? <Route path='/' exact component={ListPage} /> : <Route path='/' exact component={Login} />}
+                <Route path='/login' component={Login} />
+                <Route path='/join' component={Join} />
+                <Route path='/room' exact component={RoomPage} />
+                <Route path='/list' exact component={ListPage} />
+                <Route component={ErrorPage} />
+            </Switch>
+        </>
     );
 }
 

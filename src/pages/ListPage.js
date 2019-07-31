@@ -1,36 +1,36 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import Header from '../components/Header';
 import List from '../components/List';
 
 import '../style/ListPage.scss'
 
-const getList = () => {
-    const lists = axios.get('http://localhost:5000/room/list');
+const getList = async () => {
+    const lists = await axios.get('http://localhost:5000/room/list');
     console.log('lists');
-    console.log(lists);
+    console.log(lists.data);
 }
 
 const ListPage = () => {
-    const formRef = useRef();
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => { // componentDidMount
+        console.log('check!');
         getList();
     }, []);
     
-    const handleMakeRoom = () => {
-        formRef.current.removeAttribute('hidden');
+    const handleOpenModal = () => {
+        setModalOpen(!modalOpen);
     }
 
     return (
         <div className='listPage'>
-            <Header />
             <nav>
                 <input type='search' placeholder='채팅방 검색' />
-                <button onClick={handleMakeRoom}>방 만들기</button>
+                <button onClick={handleOpenModal}>방 만들기</button>
             </nav>
-            <form ref={formRef} method='post' action='/room' hidden>
+            {modalOpen && 
+                <form method='post' action='/room'>
                 <div>
                     <label>
                         방 이름
@@ -47,6 +47,7 @@ const ListPage = () => {
                 </div>
                 <button type='submit'>방 만들기</button>
             </form>
+            }
             <List />
         </div>
     );

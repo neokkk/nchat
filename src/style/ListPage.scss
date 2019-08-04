@@ -6,7 +6,7 @@ $darkgray : #545454;
     width: 1000px;
     height: 100%;
     background-color: white;
-    padding: 100px;
+    padding: 100px;    
 
     nav {
         display: flex;
@@ -96,6 +96,10 @@ $darkgray : #545454;
 
         li {
             margin-bottom: 40px;
+
+            &:hover {
+                background-color: rgba(196, 196, 196, 0.3);
+            }
         }
     }
 }

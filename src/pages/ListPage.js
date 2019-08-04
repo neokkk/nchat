@@ -11,8 +11,8 @@ const ListPage = () => {
     const [modalOpen, setModalOpen] = useState(false),
           [list, setList] = useState(null),
           [roomName, setRoomName] = useState(''),
-          [roomLimit, setRoomLimit] = useState(0),
-          [roomPwd, setRoomPwd] = useState('');
+          [roomPwd, setRoomPwd] = useState(''),
+          [roomLimit, setRoomLimit] = useState(0);
     
     const getList = async () => {
         await axios.get('http://localhost:5000/room/list')
@@ -21,9 +21,10 @@ const ListPage = () => {
                         console.log(lists.data);
                         setList(lists.data);
                    });
+                }
 
-        await console.log(list);
-    }
+    console.log('list');
+    console.log(list);
 
     useEffect(() => { // componentDidMount
         console.log('check!');
@@ -41,11 +42,9 @@ const ListPage = () => {
         await axios.post('http://localhost:5000/room', { data: { roomName, roomLimit, roomPwd }})
                    .then(result => {
                        console.log('result2');
-                       console.log(result);
-
+                       console.log(result.data);
+                       return <Redirect to={{ pathname: `/room/${result.data.id}` }} />
                     });
-
-        return <Redirect to='/room' />
     }
 
     return (
@@ -60,11 +59,11 @@ const ListPage = () => {
                     <div>
                         <label>
                             방 이름
-                            <input type='text' onChange={e => setRoomName(e.target.value)} />
+                            <input type='text' onChange={e => setRoomName(e.target.value)} required />
                         </label>
                         <label>
                             인원수
-                            <input type='number' onChange={e => setRoomLimit(e.target.value)} min='2' max='10' placeholder='명' />
+                            <input type='number' onChange={e => setRoomLimit(e.target.value)} min='2' max='10' placeholder='명' required />
                         </label>
                         <label>
                             비밀번호
@@ -76,13 +75,15 @@ const ListPage = () => {
             }
             {list ?
                 <ul>
-                    {list.map(l => {
-                        console.log(l);
-                        <List rommInfo={l} />
+                    {list.map(li => {
+                        console.log(li);
+                        <List roomInfo={li} />
                     })}
                 </ul>
-            : <h2>생성된 방이 없습니다.</h2>
+                :
+                <h2>개설된 방이 없습니다</h2>
             }
+            <List />
         </div>
     );
 }

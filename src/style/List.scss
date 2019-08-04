@@ -21,8 +21,10 @@ a { text-decoration: none; }
     .listSetting {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         span {
+            font-family: 'Montserrat', 'sans-serif';
             color: white;
             background-color: $pink;
             padding: 3px 10px;

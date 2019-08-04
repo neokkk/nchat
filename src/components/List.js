@@ -3,13 +3,20 @@ import { Link } from 'react-router-dom';
 
 import '../style/List.scss';
 
-const List = () => {
+const List = props => {
+    console.log('props');
+    console.log(props);
+
+    const handleClick = () => {
+        console.log('click setting!');
+    }
+
     return (
         <Link to='/room'>
             <li className='list'>
                 <div className='listSetting'>
                     <span>001</span>
-                    <i>설정 아이콘</i>
+                    <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
                 </div>
                 <h2 className='listName'>채팅방 이름</h2>
                 <h4 className='listSubname'>채팅방 카테고리</h4>

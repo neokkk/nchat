@@ -1,5 +1,6 @@
 $pink : #ea6c6c;
-$gray : #545454;
+$gray : #c4c4c4;
+$darkgray : #545454;
 
 .listPage {
     width: 1000px;
@@ -17,6 +18,8 @@ $gray : #545454;
         input {
             width: 200px;
             height: 40px;
+            border-style: none;
+            border: 1px solid $darkgray;
             border-radius: 5px;
             padding: 10px;
             appearance: none;
@@ -36,8 +39,9 @@ $gray : #545454;
         width: 400px;
         height: 250px;
         color: $gray;
-        border: 1px solid $gray;
+        border: 1px solid $darkgray;
         border-radius: 10px;
+        margin: 40px 0;
         position: relative;
 
         div {
@@ -48,6 +52,8 @@ $gray : #545454;
             margin-top: 10px;
 
             label {
+                color: $darkgray;
+                font-weight: bold;
                 width: 280px;
                 display: flex;
                 justify-content: space-between;
@@ -77,6 +83,19 @@ $gray : #545454;
             box-sizing: border-box;
             position: absolute;
             bottom: -1px;
+        }
+    }
+
+    ul {
+        margin: 40px 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        li {
+            margin-bottom: 40px;
         }
     }
 }

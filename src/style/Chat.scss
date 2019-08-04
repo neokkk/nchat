@@ -1,0 +1,60 @@
+$pink : #ea6c6c;
+$gray : #c4c4c4;
+$darkgray : #545454;
+
+.chat {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+    
+    .chatNick {
+        font-weight: bold;
+        margin: 0 20px;
+    }
+}
+
+.other {
+    img {
+        width: 40px;
+        height: 40px;
+        background-color: $gray;
+        border-radius: 50%;
+    }
+
+    .chatMessage {
+        max-width: 500px;
+        padding: 10px 20px;
+        border: 1px solid $gray;
+        border-radius: 10px;
+    }
+
+    .chatTime {
+        font-size: 10px;
+        margin-left: 20px;
+    }
+}
+
+.mine {
+    color: $pink;
+    flex-direction: row-reverse;
+
+    img {
+        width: 40px;
+        height: 40px;
+        background-color: $pink;
+        border-radius: 50%;
+    }
+
+    .chatMessage {
+        max-width: 500px;
+        padding: 10px 20px;
+        border: 1px solid $pink;
+        border-radius: 10px;
+    }
+
+    .chatTime {
+        font-size: 10px;
+        margin-right: 20px;
+    }
+}

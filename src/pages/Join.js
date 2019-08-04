@@ -41,7 +41,7 @@ const JoinPage = () => {
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className='joinPage'>
-                <Link to='/'><img src='../../public/images/ball.png' /></Link>
+                <a href='/'><img src='../../public/images/ball.png' /></a>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p className='join-error'>{message}</p>

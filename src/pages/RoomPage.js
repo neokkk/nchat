@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Chat from '../components/Chat';
+import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-// const socket = io('localhost:8020');
+// const socket = io('localhost:5000');
 
 const RoomPage = () => {
     const [input, setInput] = useState('');
@@ -27,19 +28,24 @@ const RoomPage = () => {
 
     return (
         <div className='roomPage'>
+            <Header />
             <nav>
                 <Link to='/list'>방 나가기</Link>
-                <div className='room-info'>
-                    <span>방 번호</span>
+                <div className='roomInfo'>
+                    <span>001</span>
                     <span>방 제목</span>
                     <span>방 부제</span>
                 </div>
             </nav>
+            <main>
+                <p className='roomMessage'>고난 님이 입장하였습니다.</p>
+                <Chat />
+                <Chat />
+            </main>
             <form onSubmit={handleSubmit}>
-                <input type='file' />
-                <textarea onChange={handleChange}></textarea>
+                <input type='text' onChange={handleChange} placeholder='메세지를 입력하세요' />
+                <button type='submit'>보내기</button>
             </form>
-            <Chat />
         </div>
     );
 }

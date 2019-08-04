@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 import List from '../components/List';
+import Header from '../components/Header';
 
 import '../style/ListPage.scss'
 
-const getList = async () => {
-    const lists = await axios.get('http://localhost:5000/room/list');
-    console.log('lists');
-    console.log(lists.data);
-}
-
 const ListPage = () => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false),
+          [list, setList] = useState(null),
+          [roomName, setRoomName] = useState(''),
+          [roomLimit, setRoomLimit] = useState(0),
+          [roomPwd, setRoomPwd] = useState('');
+    
+    const getList = async () => {
+        await axios.get('http://localhost:5000/room/list')
+                   .then(lists => {
+                        console.log('lists.data');
+                        console.log(lists.data);
+                        setList(lists.data);
+                   });
+
+        await console.log(list);
+    }
 
     useEffect(() => { // componentDidMount
         console.log('check!');
@@ -23,32 +34,55 @@ const ListPage = () => {
         setModalOpen(!modalOpen);
     }
 
+    const handleSubmit = async e => {
+        e.preventDefault();
+        console.log(roomName, roomLimit, roomPwd);
+
+        await axios.post('http://localhost:5000/room', { data: { roomName, roomLimit, roomPwd }})
+                   .then(result => {
+                       console.log('result2');
+                       console.log(result);
+
+                    });
+
+        return <Redirect to='/room' />
+    }
+
     return (
         <div className='listPage'>
+            <Header />
             <nav>
                 <input type='search' placeholder='채팅방 검색' />
                 <button onClick={handleOpenModal}>방 만들기</button>
             </nav>
             {modalOpen && 
-                <form method='post' action='/room'>
-                <div>
-                    <label>
-                        방 이름
-                        <input type='text' name='roomName' />
-                    </label>
-                    <label>
-                        인원수
-                        <input type='number' name='roomLimit' min='2' max='10' placeholder='명' />
-                    </label>
-                    <label>
-                        비밀번호
-                        <input type='password' name='roomPwd' placeholder='설정하지 않으면 공개방' />
-                    </label>
-                </div>
-                <button type='submit'>방 만들기</button>
-            </form>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>
+                            방 이름
+                            <input type='text' onChange={e => setRoomName(e.target.value)} />
+                        </label>
+                        <label>
+                            인원수
+                            <input type='number' onChange={e => setRoomLimit(e.target.value)} min='2' max='10' placeholder='명' />
+                        </label>
+                        <label>
+                            비밀번호
+                            <input type='password' onChange={e => setRoomPwd(e.target.value)} placeholder='설정하지 않으면 공개방' />
+                        </label>
+                    </div>
+                    <button type='submit'>방 만들기</button>
+                </form>
             }
-            <List />
+            {list ?
+                <ul>
+                    {list.map(l => {
+                        console.log(l);
+                        <List rommInfo={l} />
+                    })}
+                </ul>
+            : <h2>생성된 방이 없습니다.</h2>
+            }
         </div>
     );
 }

@@ -1,12 +1,14 @@
 import React from 'react';
 
+import '../style/Chat.scss';
+
 const Chat = () => {
     return (
-        <div className='Chat'>
+        <div className='chat other'>
             <img />
-            <span>닉네임</span>
-            <div className='message'>메시지</div>
-            <p>작성 시간</p>
+            <span className='chatNick'>닉네임</span>
+            <div className='chatMessage'>안녕하세요~ 반갑습니다~안녕하세요~ 반갑습니다~</div>
+            <span className='chatTime'>작성 시간</span>
         </div>
     );
 }

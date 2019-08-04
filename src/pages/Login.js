@@ -27,7 +27,7 @@ const LoginPage = () => {
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className='loginPage'>
-                <Link to='/'><img src='../../public/images/ball.png' /></Link>
+                <a href='/'><img src='../../public/images/ball.png' /></a>
                 <form onSubmit={handleSubmit}>
                     {message ? <p className='login-error'>{message}</p> : null}
                     <input type='email' onChange={e => setEmail(e.target.value)} value={email} placeholder='이메일' required />

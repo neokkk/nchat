@@ -1,29 +1,27 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import RoomPage from '../pages/RoomPage';
+import '../style/List.scss';
 
 const List = () => {
     return (
-        <ul className='list'>
-            <li>
-                <div className='roomSetting'>
-                    <span>채팅방 번호</span>
+        <Link to='/room'>
+            <li className='list'>
+                <div className='listSetting'>
+                    <span>001</span>
                     <i>설정 아이콘</i>
                 </div>
-                <h2 className='roomName'>채팅방 이름</h2>
-                <h4 claasName='roomSubname'>채팅방 카테고리</h4>
-                <div className='roomInfo'>
-                    <span>랜덤 색</span>
-                    <span>님 외 몇 명</span>
+                <h2 className='listName'>채팅방 이름</h2>
+                <h4 className='listSubname'>채팅방 카테고리</h4>
+                <div className='listInfo'>
+                    <div>
+                        <img></img>
+                        <span>님 외 몇 명</span>
+                    </div>
                     <span>4 / 4명</span>
                 </div>
-                <div className='roomEnter'>
-                    <Link to='/room'>채팅방 입장</Link>
-                    <Route path='/room' exact component={RoomPage} />
-                </div>
             </li>
-        </ul>
+        </Link>
     );
 }
 

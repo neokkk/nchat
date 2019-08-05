@@ -75,7 +75,8 @@ const ListPage = () => {
             }
             {list ?
                 <ul>
-                    {list.map(li => {
+                    {list.map((li, index) => {
+                        console.log(index);
                         console.log(li);
                         <List roomInfo={li} />
                     })}

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 import axios from 'axios';
 
 import Chat from '../components/Chat';
@@ -8,11 +8,18 @@ import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-// const socket = io('localhost:5000');
+const socket = io.connect('http://localhost:5000', { path: '/socket.io' });
 
 const RoomPage = () => {
     const [input, setInput] = useState('');
     const [inputArray, setInputArray] = useState([]);
+
+    useEffect(() => {
+        socket.on('join', data => {
+            console.log('join data');
+            console.log(data);
+        });
+    }, []);
 
     const handleChange = e => {
         setInput(e.target.value);

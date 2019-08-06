@@ -24,7 +24,7 @@ router.post('/join', async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
-    passport.authenticate('local', (authError, user, info) => {
+    passport.authenticate('local', (authError, user) => {
         if (authError) {
             console.error(authError);
             next(authError);
@@ -32,7 +32,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 
         if (!user) {
             req.flash('loginError', '존재하지 않는 회원입니다.');
-            res.redirect('http://localhost:3000');
         }
 
         req.login(user, loginError => {
@@ -52,7 +51,7 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
-router.post('/isLoggedIn', (req, res, next) => {
+router.post('/isLoggedIn', (req, res) => {
     console.log('req.user');
     console.log(req.user);
 

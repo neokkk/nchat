@@ -17,12 +17,23 @@ const initialState = {
     user: null,
 }
 
-function getUser() {
-    axios.post('/auth/isLoggedIn')
-         .then(result => {
-             console.log('result');
-             console.log(result);
-         });
+function getUserAPI() {
+    return axios.post('http://localhost:5000/auth/isLoggedIn');
+}
+
+// redux-thunk
+export const getUser = () => dispatch => {
+    dispatch(loginRequest());
+
+    return getUserAPI().then(response => {
+        console.log('response');
+        console.log(response);
+        dispatch(loginSuccess(response));
+    }).catch(err => {
+        console.log('err');
+        console.log(err);
+        dispatch(loginFailure(err));
+    });
 }
 
 // reducer

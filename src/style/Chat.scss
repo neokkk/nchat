@@ -15,13 +15,6 @@ $darkgray : #545454;
 }
 
 .other {
-    img {
-        width: 40px;
-        height: 40px;
-        background-color: $gray;
-        border-radius: 50%;
-    }
-
     .chatMessage {
         max-width: 500px;
         padding: 15px 20px;
@@ -38,13 +31,6 @@ $darkgray : #545454;
 .mine {
     color: $pink;
     flex-direction: row-reverse;
-
-    img {
-        width: 40px;
-        height: 40px;
-        background-color: $pink;
-        border-radius: 50%;
-    }
 
     .chatMessage {
         max-width: 500px;

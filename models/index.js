@@ -17,12 +17,4 @@ db.User = require('./user')(sequelize, Sequelize);
 db.Room = require('./room')(sequelize, Sequelize);
 db.Chat = require('./chat')(sequelize, Sequelize);
 
-// 1 : n = room : user
-db.Room.hasMany(db.User);
-db.User.belongsTo(db.Room, { foreignKey: 'id' });
-
-// 1 : n = user : chat
-db.User.hasMany(db.Chat);
-db.Chat.belongsTo(db.User, { foreignKey: 'id' });
-
 module.exports = db;

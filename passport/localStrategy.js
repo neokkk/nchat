@@ -4,13 +4,11 @@ const LocalStrategy = require('passport-local').Strategy,
 const { User } = require('../models');
 
 module.exports = passport => {
-    console.log(7);
     passport.use(new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'email', 
         passwordField: 'pwd'
     }, async (email, password, done) => {
         try {
-            console.log(8);
             const exUser = await User.findOne({ where: { email } });
 
             if (exUser) { // 이미 유저가 있는 경우

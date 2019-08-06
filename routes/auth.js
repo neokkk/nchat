@@ -24,40 +24,43 @@ router.post('/join', async (req, res, next) => {
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
-    console.log(1);
-    console.log(req.body);
     passport.authenticate('local', (authError, user, info) => {
-        console.log(2);
-        console.log(user);
         if (authError) {
-            console.log(3);
             console.error(authError);
             next(authError);
         }
 
         if (!user) {
-            console.log(4);
-            req.flash('loginError', info.message);
-            res.redirect('/');
+            req.flash('loginError', '존재하지 않는 회원입니다.');
+            res.redirect('http://localhost:3000');
         }
 
         req.login(user, loginError => {
-            console.log(5);
             if (loginError) {
-                console.log(6);
                 console.error(loginError);
                 next(loginError);
             }
-
-            res.redirect('/');
         });
-    })
+
+        res.redirect('http://localhost:3000');
+    })(req, res, next);
 });
 
 router.get('/logout', isLoggedIn, (req, res) => {
     req.logout();
     req.session.destroy();
     res.redirect('/');
+});
+
+router.post('/isLoggedIn', (req, res, next) => {
+    console.log('req.user');
+    console.log(req.user);
+
+    if (req.isAuthenticated()) {
+        res.send('user', req.user);
+    } else {
+        res.send('user', null);
+    }
 });
 
 module.exports = router;

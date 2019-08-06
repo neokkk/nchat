@@ -8,7 +8,7 @@ import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-const socket = io.connect('http://localhost:5000', { path: '/socket.io' });
+const socket = io.connect('http://localhost:5000/chat', { path: '/socket.io' });
 
 const RoomPage = () => {
     const [input, setInput] = useState('');

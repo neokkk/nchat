@@ -1,24 +1,37 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
-import axios from 'axios';
 
 import Chat from '../components/Chat';
 import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-const socket = io.connect('http://localhost:5000/chat', { path: '/socket.io' });
+const socket = io.connect('http://localhost:5000');
 
-const RoomPage = () => {
+const RoomPage = props => {
+    const { id, name, subname } = props.location.state.room;
+
     const [input, setInput] = useState('');
     const [inputArray, setInputArray] = useState([]);
 
     useEffect(() => {
-        socket.on('join', data => {
+        console.log('effect')
+        socket.on('userJoin', data => {
             console.log('join data');
             console.log(data);
+            setInputArray(prev => [...prev, { input: data, type: 'SYSTEM', user: null }]);
         });
+
+        socket.emit('join', { user: { name: 'James' }, room: id });
+
+        socket.on('new message', data => {
+            console.log('other message');
+            console.log(data);
+            setInputArray(prev => [...prev, { input: data.input, type: 'NORMAL', user: 'OTHER' }]);
+        });
+
     }, []);
 
     const handleChange = e => {
@@ -28,9 +41,10 @@ const RoomPage = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        setInputArray([...inputArray, input]);
+        setInputArray(inputArray => [...inputArray, { input, type: 'NORMAL', user: 'MINE' }]);
 
-        axios.post(`/room/id/chat`, { data: input });
+        socket.emit('message', { user: { name: 'James', input }, room: id });
+        setInput('');
     }
 
     return (
@@ -39,18 +53,16 @@ const RoomPage = () => {
             <nav>
                 <Link to='/list'>방 나가기</Link>
                 <div className='roomInfo'>
-                    <span>001</span>
-                    <span>방 제목</span>
-                    <span>방 부제</span>
+                    <span>{id}</span>
+                    <span>{name}</span>
+                    <span>{subname}</span>
                 </div>
             </nav>
             <main>
-                <p className='roomMessage'>고난 님이 입장하였습니다.</p>
-                <Chat />
-                <Chat />
+                {inputArray.map(({ type, input, user }, i) => <Chat key={i} type={type} message={input} user={user} />)}
             </main>
             <form onSubmit={handleSubmit}>
-                <input type='text' onChange={handleChange} placeholder='메세지를 입력하세요' />
+                <input type='text' onChange={handleChange} value={input} placeholder='메세지를 입력하세요' />
                 <button type='submit'>보내기</button>
             </form>
         </div>

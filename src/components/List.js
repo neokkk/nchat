@@ -1,31 +1,36 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 import '../style/List.scss';
 
 const List = props => {
-    console.log('props');
-    console.log(props);
+    const { id, name, subname, host, limit } = props.roomInfo;
 
     const handleClick = () => {
         console.log('click setting!');
     }
 
     return (
-        <Link to='/room'>
+        <Link to={{
+            pathname: `/room/${id}`,
+            state: {
+                room: props.roomInfo
+            }
+        }}>
             <li className='list'>
                 <div className='listSetting'>
-                    <span>001</span>
+                    <span>{id}</span>
                     <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
                 </div>
-                <h2 className='listName'>채팅방 이름</h2>
-                <h4 className='listSubname'>채팅방 카테고리</h4>
+                <h2 className='listName'>{name}</h2>
+                <h4 className='listSubname'>{subname}</h4>
                 <div className='listInfo'>
                     <div>
                         <img></img>
-                        <span>님 외 몇 명</span>
+                        <span>{host}님 외 몇 명</span>
                     </div>
-                    <span>4 / 4명</span>
+                    <span>4 / {limit}명</span>
                 </div>
             </li>
         </Link>

@@ -1,11 +1,13 @@
 const express = require('express'),
       passport = require('passport'),
       bcrypt = require('bcrypt');
+const LocalStrategy = require('passport-local').Strategy;
 
 const router = express.Router();
 
 const { User } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+
 
 router.post('/join', async (req, res, next) => {
     const { nick, email, pwd } = req.body.data;
@@ -23,7 +25,7 @@ router.post('/join', async (req, res, next) => {
               })
 });
 
-router.post('/login', isNotLoggedIn, (req, res, next) => {
+router.post('/login', (req, res, next) => {
     passport.authenticate('local', (authError, user) => {
         if (authError) {
             console.error(authError);

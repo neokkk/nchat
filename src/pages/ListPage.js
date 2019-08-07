@@ -17,14 +17,9 @@ const ListPage = () => {
     const getList = async () => {
         await axios.get('http://localhost:5000/room/list')
                    .then(lists => {
-                        console.log('lists.data');
-                        console.log(lists.data);
                         setList(lists.data);
                    });
                 }
-
-    console.log('list');
-    console.log(list);
 
     useEffect(() => { // componentDidMount
         console.log('check!');
@@ -75,16 +70,13 @@ const ListPage = () => {
             }
             {list ?
                 <ul>
-                    {list.map((li, index) => {
-                        console.log(index);
-                        console.log(li);
-                        <List roomInfo={li} />
-                    })}
+                    {list.map((li, index) => (
+                        <List key={index} roomInfo={li} />
+                    ))}
                 </ul>
                 :
                 <h2>개설된 방이 없습니다</h2>
             }
-            <List />
         </div>
     );
 }

@@ -6,7 +6,8 @@ module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -16,12 +17,6 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
-      },
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
       },
       {
         test: /\.html$/,

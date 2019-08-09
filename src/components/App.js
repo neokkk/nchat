@@ -23,7 +23,6 @@ const App = props => {
     }, []);
     
     return (
-        <>
             <Switch>
                 {user ? <Route path='/' exact component={ListPage} /> : <Route path='/' exact component={Login} />}
                 <Route path='/login' component={Login} />
@@ -32,7 +31,6 @@ const App = props => {
                 <Route path='/room/:id' component={RoomPage} />
                 <Route component={ErrorPage} />
             </Switch>
-        </>
     );
 }
 

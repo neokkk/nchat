@@ -26,20 +26,17 @@ const ListPage = () => {
         getList();
     }, []);
     
-    const handleOpenModal = () => {
+    const handleModalOpen = () => {
         setModalOpen(!modalOpen);
     }
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(roomName, roomLimit, roomPwd);
 
         await axios.post('http://localhost:5000/room', { data: { roomName, roomLimit, roomPwd }})
                    .then(result => {
-                       console.log('result2');
-                       console.log(result.data);
-                       return <Redirect to={{ pathname: `/room/${result.data.id}` }} />
-                    });
+                        <Redirect to={{ pathname: `/room/${result.data.id}` }} />
+                   });
     }
 
     return (
@@ -47,7 +44,7 @@ const ListPage = () => {
             <Header />
             <nav>
                 <input type='search' placeholder='채팅방 검색' />
-                <button onClick={handleOpenModal}>방 만들기</button>
+                <button onClick={handleModalOpen}>방 만들기</button>
             </nav>
             {modalOpen && 
                 <form onSubmit={handleSubmit}>

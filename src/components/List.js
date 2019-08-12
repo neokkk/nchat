@@ -7,8 +7,9 @@ import '../style/List.scss';
 const List = props => {
     const { id, name, subname, host, limit } = props.roomInfo;
 
-    const handleClick = () => {
+    const handleClick = e => {
         console.log('click setting!');
+        e.preventDefault();
     }
 
     return (
@@ -22,6 +23,10 @@ const List = props => {
                 <div className='listSetting'>
                     <span>{id}</span>
                     <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
+                    <ul className='listBtn'>
+                        <li>수정</li>
+                        <li>제거</li>
+                    </ul>
                 </div>
                 <h2 className='listName'>{name}</h2>
                 <h4 className='listSubname'>{subname}</h4>

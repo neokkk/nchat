@@ -21,7 +21,7 @@ const RoomPage = props => {
         socket.on('userJoin', data => {
             console.log('join data');
             console.log(data);
-            setInputArray(prev => [...prev, { input: data, type: 'SYSTEM', user: null }]);
+            setInputArray(prev => [...prev, { input: data.message, type: 'SYSTEM', user: null }]);
         });
 
         socket.emit('join', { user: { name: 'James' }, room: id });
@@ -32,6 +32,7 @@ const RoomPage = props => {
             setInputArray(prev => [...prev, { input: data.input, type: 'NORMAL', user: 'OTHER' }]);
         });
 
+        socket.emit('leave', { user: { name: 'James' }, room: id });
     }, []);
 
     const handleChange = e => {

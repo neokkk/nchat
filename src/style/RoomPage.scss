@@ -42,7 +42,6 @@ $darkgray : #545454;
                     font-family: 'Montserrat', 'sans-serif';
                     color: $pink;
                     background-color: white;
-                    width: 50px;
                     padding: 3px 10px;
                     margin-right: 20px;
                     border-radius: 20px;
@@ -72,7 +71,7 @@ $darkgray : #545454;
         padding: 30px;
         overflow-y: scroll;
 
-        .roomMessage {
+        p {
             text-align: center;
         }
     }

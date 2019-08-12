@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../style/List.scss';
 
 const List = props => {
     const { id, name, subname, host, limit } = props.roomInfo;
+    const [setting, setSetting] = useState(false);
 
-    const handleClick = () => {
-        console.log('click setting!');
+    const handleClick = e => {
+        e.preventDefault();
+        setSetting(!setting);
     }
 
     return (
@@ -22,6 +24,10 @@ const List = props => {
                 <div className='listSetting'>
                     <span>{id}</span>
                     <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
+                    {setting && 
+                    <div className='settingInfo'>
+                        <a>삭제하기</a>
+                    </div>}
                 </div>
                 <h2 className='listName'>{name}</h2>
                 <h4 className='listSubname'>{subname}</h4>

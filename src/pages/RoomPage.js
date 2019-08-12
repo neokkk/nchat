@@ -13,15 +13,14 @@ const socket = io.connect('http://localhost:5000');
 const RoomPage = props => {
     const { id, name, subname } = props.location.state.room;
 
-    const [input, setInput] = useState('');
-    const [inputArray, setInputArray] = useState([]);
+    const [input, setInput] = useState(''),
+          [inputArray, setInputArray] = useState([]);
 
     useEffect(() => {
-        console.log('effect')
         socket.on('userJoin', data => {
             console.log('join data');
             console.log(data);
-            setInputArray(prev => [...prev, { input: data, type: 'SYSTEM', user: null }]);
+            setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
         });
 
         socket.emit('join', { user: { name: 'James' }, room: id });
@@ -29,7 +28,7 @@ const RoomPage = props => {
         socket.on('new message', data => {
             console.log('other message');
             console.log(data);
-            setInputArray(prev => [...prev, { input: data.input, type: 'NORMAL', user: 'OTHER' }]);
+            setInputArray(prev => [...prev, { input: data.input, type: 'OTHER', user: 'o' }]);
         });
 
     }, []);
@@ -41,7 +40,7 @@ const RoomPage = props => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        setInputArray(inputArray => [...inputArray, { input, type: 'NORMAL', user: 'MINE' }]);
+        setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: 'm' }]);
 
         socket.emit('message', { user: { name: 'James', input }, room: id });
         setInput('');

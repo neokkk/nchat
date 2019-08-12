@@ -1,66 +1,63 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import axios from 'axios';
 
 import '../style/Login.scss';
+import * as userActions from '../store/user';
 
-const LoginPage = () => {
-    const [email, setEmail] = useState('test@gmail.com'),
-          [pwd, setPwd] = useState('123');
+const LoginPage = ({ UserActions }) => {
+    const [email, setEmail] = useState('nk@naver.com'),
+          [pwd, setPwd] = useState('nkpwd');
 
 
-    const handleConfirm = async () => {
-        const result = await axios.post('http://localhost:5000/auth/isLoggedIn', null, {
-            withCredentials: true,
-        })
-        console.log('result')
-        console.log(result)
-    }
+    const handleSubmit = async e => {
+        try {
+            e.preventDefault();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const submitResult = await axios({
-            method: 'post',
-            url: 'http://localhost:5000/auth/login',
-            data: {
-                email,
-                pwd,
-            },
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
-            })
-            .then(function (response) {
-                //handle success
-                console.log(response);
-            })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
-            });
-        
-            console.log('submitResult')
-            console.log(submitResult)
+            await axios
+                .post('http://localhost:5000/auth/login', { email, pwd })
+                .then(result => {
+                    const { user } = result.data;
+
+                    if (user) {
+                        UserActions.loginSuccess(user);
+                    } else {
+                        UserActions.loginFailure();
+                    }
+
+                    return <Redirect to='/' />
+                })
+                .catch(err => {
+                    console.log('axios error');
+                    console.log(err);
+                });
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className='loginPage'>
                 <a href='/'><img src='../../public/images/ball.png' /></a>
-                <form>
+                <form onSubmit={handleSubmit}>
                     {/* {message ? <p className='login-error'>{message}</p> : null} */}
                     <input type='email' name='email' onChange={e => setEmail(e.target.value)} value={email} placeholder='이메일' required />
                     <input type='password' name='pwd' onChange={e => setPwd(e.target.value)} value={pwd} placeholder='비밀번호' required />
-                    <button onClick={handleSubmit}>로그인</button>
+                    <input type='submit' value='로그인' />
                     <div>
                         <a href=''>구글 로그인</a>
                         <Link to='/join'>회원가입</Link>
                     </div>
                 </form>
             </div>
-            <div>
-                <button onClick={handleConfirm}>confirm login</button>
-            </div>
         </div>
     );
 }
 
-export default LoginPage;
+export default connect(null, dispatch => ({
+    UserActions: bindActionCreators(userActions, dispatch)
+}))(LoginPage);

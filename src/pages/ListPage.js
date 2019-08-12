@@ -15,11 +15,12 @@ const ListPage = () => {
           [roomLimit, setRoomLimit] = useState(0);
     
     const getList = async () => {
-        await axios.get('http://localhost:5000/room/list')
-                   .then(lists => {
-                        setList(lists.data);
-                   });
-                }
+        await axios
+            .get('http://localhost:5000/room/list')
+            .then(lists => {
+                setList(lists.data);
+            });
+    }
 
     useEffect(() => { // componentDidMount
         console.log('check!');
@@ -34,9 +35,9 @@ const ListPage = () => {
         e.preventDefault();
         console.log(roomName, roomLimit, roomPwd);
 
-        await axios.post('http://localhost:5000/room', { data: { roomName, roomLimit, roomPwd }})
+        await axios.post('http://localhost:5000/room', { roomName, roomLimit, roomPwd })
                    .then(result => {
-                       console.log('result2');
+                       console.log('make room');
                        console.log(result.data);
                        return <Redirect to={{ pathname: `/room/${result.data.id}` }} />
                     });

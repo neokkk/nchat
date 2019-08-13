@@ -10,33 +10,31 @@ import * as userActions from '../store/user';
 
 const LoginPage = ({ UserActions }) => {
     const [email, setEmail] = useState('nk@naver.com'),
-          [pwd, setPwd] = useState('nkpwd');
+          [pwd, setPwd] = useState('nkpwd'),
+          [message, setMessage] = useState('');
 
 
     const handleSubmit = async e => {
-        try {
-            e.preventDefault();
+        e.preventDefault();
 
-            await axios
-                .post('http://localhost:5000/auth/login', { email, pwd })
-                .then(result => {
-                    const { user } = result.data;
+        await axios
+            .post('http://localhost:5000/auth/login', { email, pwd })
+            .then(result => {
+                const { user, message } = result.data;
 
-                    if (user) {
-                        UserActions.loginSuccess(user);
-                    } else {
-                        UserActions.loginFailure();
-                    }
+                if (user) {
+                    UserActions.loginSuccess(user);
+                } else {
+                    UserActions.loginFailure();
+                    setMessage(message);
+                }
 
-                    return <Redirect to='/' />
-                })
-                .catch(err => {
-                    console.log('axios error');
-                    console.log(err);
-                });
-        } catch (err) {
-            console.log(err);
-        }
+                return <Redirect to='/' />
+            })
+            .catch(err => {
+                console.log('axios error');
+                console.error(err);
+            });
     }
 
     return (
@@ -44,7 +42,7 @@ const LoginPage = ({ UserActions }) => {
             <div className='loginPage'>
                 <a href='/'><img src='../../public/images/ball.png' /></a>
                 <form onSubmit={handleSubmit}>
-                    {/* {message ? <p className='login-error'>{message}</p> : null} */}
+                    {message ? <p className='login-error'>{message}</p> : null}
                     <input type='email' name='email' onChange={e => setEmail(e.target.value)} value={email} placeholder='이메일' required />
                     <input type='password' name='pwd' onChange={e => setPwd(e.target.value)} value={pwd} placeholder='비밀번호' required />
                     <input type='submit' value='로그인' />

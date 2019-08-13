@@ -15,8 +15,6 @@ const JoinPage = () => {
         try {
             e.preventDefault();
 
-            console.log(nick, email, pwd, pwdChk);
-            
             if (pwd !== pwdChk) {
                 setMessage('비밀번호가 일치하지 않습니다.');
                 return;
@@ -25,19 +23,13 @@ const JoinPage = () => {
             await axios
                 .post('http://localhost:5000/auth/join', { nick, email, pwd })
                 .then(result => {
-                    console.log('join result');
-                    console.log(result);
                     setMessage(result.data.message);
+                    return <Redirect to='/login' />;
                 })
                 .catch(err => {
-                    console.log('err');
-                    console.log(err);
+                    console.error(err);
                 });
-
-            console.log('message');
-            console.log(message);
             
-            return <Redirect to= '/' />;
         } catch (err) {
             console.error(err);
         }

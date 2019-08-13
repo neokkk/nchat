@@ -15,14 +15,17 @@ $darkgray : #545454;
         margin-top: 80px;
         margin-bottom: 20px;
 
-        input {
-            width: 200px;
-            height: 40px;
-            border-style: none;
-            border: 1px solid $darkgray;
-            border-radius: 5px;
-            padding: 10px;
-            appearance: none;
+        .listSearch {
+
+            input {
+                width: 200px;
+                height: 40px;
+                border-style: none;
+                border: 1px solid $darkgray;
+                border-radius: 5px;
+                padding: 10px;
+                appearance: none;
+            }
         }
 
         button {
@@ -35,9 +38,9 @@ $darkgray : #545454;
         }
     }
 
-    form {
+    .listForm {
         width: 400px;
-        height: 250px;
+        height: 300px;
         color: $gray;
         border: 1px solid $darkgray;
         border-radius: 10px;

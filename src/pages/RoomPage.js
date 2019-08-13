@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 import Chat from '../components/Chat';
 import Header from '../components/Header';
@@ -11,7 +13,10 @@ import '../style/RoomPage.scss';
 const socket = io.connect('http://localhost:5000');
 
 const RoomPage = props => {
-    const { id, name, subname } = props.location.state.room;
+    const { id, name, subname, host, limit } = props.location.state.room;
+    const { user } = props;
+    console.log('room user');
+    console.log(user);
 
     const [input, setInput] = useState(''),
           [inputArray, setInputArray] = useState([]);
@@ -23,7 +28,7 @@ const RoomPage = props => {
             setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
         });
 
-        socket.emit('join', { user: { name: 'James' }, room: id });
+        socket.emit('join', { user: user.nick, room: id });
 
         socket.on('new message', data => {
             console.log('other message');
@@ -37,13 +42,22 @@ const RoomPage = props => {
         setInput(e.target.value);
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
-        setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: 'm' }]);
-
-        socket.emit('message', { user: { name: 'James', input }, room: id });
-        setInput('');
+        await axios
+            .post(`http://localhost:5000/room/${id}/chat`, { user, input })
+            .then(result => {
+                console.log('chat result');
+                console.log(result);
+                setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick }]);
+        
+                socket.emit('message', { user: { name: user.nick, input }, room: id });
+                setInput('');
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
     return (
@@ -68,4 +82,6 @@ const RoomPage = props => {
     );
 }
 
-export default RoomPage;
+export default connect(state => ({
+    user: state.user.user
+}), null)(RoomPage);

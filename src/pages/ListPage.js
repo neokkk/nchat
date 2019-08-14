@@ -16,6 +16,10 @@ const ListPage = ({ user }) => {
           [roomSubname, setRoomSubname] = useState(''),
           [roomPwd, setRoomPwd] = useState(''),
           [roomLimit, setRoomLimit] = useState(0);
+
+
+
+          console.log(user);
     
     const getList = async () => {
         await axios
@@ -34,10 +38,17 @@ const ListPage = ({ user }) => {
         setModalOpen(!modalOpen);
     }
 
-    const handleClick = e => {
-        e.preventDefault();
-        console.log('click target');
-        console.log(e.target);
+    const handleClick = info => {
+        console.log('click room target');
+        console.log(info);
+
+        if (info.roomPwd !== '') {
+            const validation = prompt('비밀번호를 입력하세요' );
+
+            if (validation) {
+                <Redirect to={`/room/${info.id}`} />
+            }
+        }
     }
 
     const handleSearch = async e => {
@@ -53,16 +64,7 @@ const ListPage = ({ user }) => {
     const handleMakeRoom = async e => {
         e.preventDefault();
 
-        await axios
-            .post('http://localhost:5000/room', { roomName, roomSubname, roomLimit, roomPwd, user })
-            .then(result => {
-                console.log('make room');
-                console.log(result.data);
-                return <Redirect to={{ pathname: `/room/${result.data.id}` }} />
-            })
-            .catch(err => {
-                console.error(err);
-            });
+        await axios.post('http://localhost:5000/room', { roomName, roomSubname, roomLimit, roomPwd, user });
     }
 
     return (
@@ -75,36 +77,36 @@ const ListPage = ({ user }) => {
                 <button onClick={handleOpenModal}>방 만들기</button>
             </nav>
             {modalOpen && 
-                <form className='listForm' onSubmit={handleMakeRoom}>
-                    <div>
-                        <label>
-                            방 이름
-                            <input type='text' onChange={e => setRoomName(e.target.value)} required maxLength='20' />
-                        </label>
-                        <label>
-                            카테고리
-                            <input type='text' onChange={e => setRoomSubname(e.target.value)} maxLength='30' />
-                        </label>
-                        <label>
-                            인원수
-                            <input type='number' onChange={e => setRoomLimit(e.target.value)} min='2' max='10' placeholder='명' required />
-                        </label>
-                        <label>
-                            비밀번호
-                            <input type='password' onChange={e => setRoomPwd(e.target.value)} maxLength='30' placeholder='설정하지 않으면 공개방' />
-                        </label>
-                    </div>
-                    <button type='submit'>방 만들기</button>
-                </form>
+            <form className='listForm' onSubmit={handleMakeRoom}>
+                <div>
+                    <label>
+                        방 이름
+                        <input type='text' onChange={e => setRoomName(e.target.value)} required maxLength='20' />
+                    </label>
+                    <label>
+                        카테고리
+                        <input type='text' onChange={e => setRoomSubname(e.target.value)} maxLength='30' />
+                    </label>
+                    <label>
+                        인원수
+                        <input type='number' onChange={e => setRoomLimit(e.target.value)} min='2' max='10' placeholder='명' required />
+                    </label>
+                    <label>
+                        비밀번호
+                        <input type='password' onChange={e => setRoomPwd(e.target.value)} maxLength='30' placeholder='설정하지 않으면 공개방' />
+                    </label>
+                </div>
+                <button type='submit'>방 만들기</button>
+            </form>
             }
             {list ?
-                <ul>
-                    {list.map((li, index) => (
-                        <List onClick={handleClick} key={index} roomInfo={li} />
-                    ))}
-                </ul>
-                :
-                <h2>개설된 방이 없습니다</h2>
+            <ul>
+                {list.map((li, index) => (
+                    <List onClick={li => handleClick(li)} key={index} roomInfo={li} />
+                ))}
+            </ul>
+            :
+            <h2>개설된 방이 없습니다</h2>
             }
         </div>
     );

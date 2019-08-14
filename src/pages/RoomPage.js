@@ -10,18 +10,21 @@ import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-const socket = io.connect('http://localhost:5000');
+export const socket = io.connect('http://localhost:5000');
 
 const RoomPage = props => {
+    console.log('roomPAge')
     const { id, name, subname, host, limit } = props.location.state.room;
     const { user } = props;
-    console.log('room user');
-    console.log(user);
 
     const [input, setInput] = useState(''),
           [inputArray, setInputArray] = useState([]);
 
     useEffect(() => {
+        // window.addEventListener("beforeunload", () => {
+        //     console.log('beforeunload')
+        //   socket.emit('leave');
+        // })
         socket.on('userJoin', data => {
             console.log('join data');
             console.log(data);
@@ -36,23 +39,25 @@ const RoomPage = props => {
             setInputArray(prev => [...prev, { input: data.input, type: 'OTHER', user: 'o' }]);
         });
 
+        socket.on('exit', data => {
+            setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
+        });
     }, []);
 
     const handleChange = e => {
         setInput(e.target.value);
     }
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
-        await axios
+        axios
             .post(`http://localhost:5000/room/${id}/chat`, { user, input })
-            .then(result => {
-                console.log('chat result');
-                console.log(result);
-                setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick }]);
-        
+            .then(() => {
+                console.log('?')
                 socket.emit('message', { user: { name: user.nick, input }, room: id });
+                
+                setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick }]);
                 setInput('');
             })
             .catch(err => {
@@ -60,11 +65,16 @@ const RoomPage = props => {
             });
     }
 
+    const handleLeave = () => {
+        socket.emit('leave');
+        props.history.push('/list');
+    }
+
     return (
         <div className='roomPage'>
             <Header />
             <nav>
-                <Link to='/list'>방 나가기</Link>
+                <button onClick={handleLeave}>방 나가기</button>
                 <div className='roomInfo'>
                     <span>{id}</span>
                     <span>{name}</span>

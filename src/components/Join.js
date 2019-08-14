@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import '../style/Join.scss';
 
-const JoinPage = () => {
+const JoinPage = props => {
     const [nick, setNick] = useState(''),
           [email, setEmail] = useState(''),
           [pwd, setPwd] = useState(''),
@@ -24,7 +24,7 @@ const JoinPage = () => {
                 .post('http://localhost:5000/auth/join', { nick, email, pwd })
                 .then(result => {
                     setMessage(result.data.message);
-                    return <Redirect to='/login' />;
+                    props.history.push('/');
                 })
                 .catch(err => {
                     console.error(err);

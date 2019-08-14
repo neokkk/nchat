@@ -1,16 +1,26 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 import '../style/List.scss';
+import { socket } from '../pages/RoomPage';
 
 const List = props => {
     const { user } = props;
     const { id, name, subname, host, limit } = props.roomInfo;
 
     const [setting, setSetting] = useState(false);
+    const [userCount, setUserCount] = useState(0);
+
+    useEffect(() => {
+        socket.on('userCountChanged', ({ roomId, userCount }) => {
+            console.log(roomId, ':', userCount)
+            if (id === roomId) setUserCount(userCount);
+        })
+    }, []);
+    
 
     const handleClick = e => {
         e.preventDefault();
@@ -47,10 +57,10 @@ const List = props => {
                 <h4 className='listSubname'>{subname}</h4>
                 <div className='listInfo'>
                     <div>
-                        <img></img>
-                        <span>{host}님 외 몇 명</span>
+                        <img src='../../public/images/crown.png' />
+                        <span>{host} 님</span>
                     </div>
-                    <span>4 / {limit}명</span>
+                    <span>{userCount} / {limit}명</span>
                 </div>
             </li>
         </Link>

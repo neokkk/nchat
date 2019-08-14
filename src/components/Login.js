@@ -29,7 +29,7 @@ const LoginPage = ({ UserActions }) => {
                     setMessage(message);
                 }
 
-                return <Redirect to='/' />
+                // return <Redirect to='/' />
             })
             .catch(err => {
                 console.log('axios error');

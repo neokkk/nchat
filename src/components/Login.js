@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -14,22 +14,20 @@ const LoginPage = ({ UserActions }) => {
           [message, setMessage] = useState('');
 
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
-        await axios
+        axios
             .post('http://localhost:5000/auth/login', { email, pwd })
             .then(result => {
                 const { user, message } = result.data;
 
-                if (user) {
+                if (user) { // 로그인된 유저가 있으면 성공
                     UserActions.loginSuccess(user);
                 } else {
                     UserActions.loginFailure();
                     setMessage(message);
                 }
-
-                // return <Redirect to='/' />
             })
             .catch(err => {
                 console.log('axios error');

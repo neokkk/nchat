@@ -14,28 +14,20 @@ export const socket = io.connect('http://localhost:5000');
 
 const RoomPage = props => {
     console.log('roomPAge')
-    const { id, name, subname, host, limit } = props.location.state.room;
+    const { id, name, subname } = props.location.state.room;
     const { user } = props;
 
     const [input, setInput] = useState(''),
           [inputArray, setInputArray] = useState([]);
 
     useEffect(() => {
-        // window.addEventListener("beforeunload", () => {
-        //     console.log('beforeunload')
-        //   socket.emit('leave');
-        // })
         socket.on('userJoin', data => {
-            console.log('join data');
-            console.log(data);
             setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
         });
 
         socket.emit('join', { user: user.nick, room: id });
 
         socket.on('new message', data => {
-            console.log('other message');
-            console.log(data);
             setInputArray(prev => [...prev, { input: data.input, type: 'OTHER', user: 'o' }]);
         });
 
@@ -54,7 +46,6 @@ const RoomPage = props => {
         axios
             .post(`http://localhost:5000/room/${id}/chat`, { user, input })
             .then(() => {
-                console.log('?')
                 socket.emit('message', { user: { name: user.nick, input }, room: id });
                 
                 setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick }]);

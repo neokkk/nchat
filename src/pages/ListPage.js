@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -8,7 +7,7 @@ import Header from '../components/Header';
 
 import '../style/ListPage.scss'
 
-const ListPage = ({ user }) => {
+const ListPage = ({ user, ...props }) => {
     const [modalOpen, setModalOpen] = useState(false),
           [list, setList] = useState(null),
           [search, setSearch] = useState(''),
@@ -17,16 +16,11 @@ const ListPage = ({ user }) => {
           [roomPwd, setRoomPwd] = useState(''),
           [roomLimit, setRoomLimit] = useState(0);
 
-
-
-          console.log(user);
-    
-    const getList = async () => {
-        await axios
+    const getList = () => {
+        axios
             .get('http://localhost:5000/room/list')
-            .then(lists => {
-                setList(lists.data);
-            });
+            .then(lists => setList(lists.data))
+            .catch(err => console.error(err));
     }
 
     useEffect(() => { // componentDidMount
@@ -38,33 +32,40 @@ const ListPage = ({ user }) => {
         setModalOpen(!modalOpen);
     }
 
-    const handleClick = info => {
-        console.log('click room target');
-        console.log(info);
-
-        if (info.roomPwd !== '') {
-            const validation = prompt('비밀번호를 입력하세요' );
+    const handlePassword = info => {
+        if (info.pwd == null) { // 방 비밀번호가 없으면
+            props.history.push(`/room/${info.id}`);
+        } else {
+            const validation = prompt('비밀번호를 입력하세요');
+            console.log(2);
 
             if (validation) {
-                <Redirect to={`/room/${info.id}`} />
+                props.history.push(`/room/${info.id}`);
+                console.log(3);
             }
         }
     }
 
-    const handleSearch = async e => {
+    const handleSearch = e => {
         e.preventDefault();
 
-        await axios
+        axios
             .get(`http://localhost:5000/room/search?query=${search}`)
-            .then(result => {
-                setList(result.data);
-            });
+            .then(result => setList(result.data))
+            .catch(err => console.error(err));
     }
 
-    const handleMakeRoom = async e => {
+    const handleMakeRoom = e => {
         e.preventDefault();
 
-        await axios.post('http://localhost:5000/room', { roomName, roomSubname, roomLimit, roomPwd, user });
+        axios
+            .post('http://localhost:5000/room', { roomName, roomSubname, roomLimit, roomPwd, user })
+            .then(result => {
+                console.log('make room result');
+                console.log(result);
+                props.history.push(`/room/${result.data.id}`);
+            })
+            .catch(err => console.error(err));
     }
 
     return (
@@ -102,7 +103,7 @@ const ListPage = ({ user }) => {
             {list ?
             <ul>
                 {list.map((li, index) => (
-                    <List onClick={li => handleClick(li)} key={index} roomInfo={li} />
+                    <List handlePassword={handlePassword} key={index} roomInfo={li} />
                 ))}
             </ul>
             :

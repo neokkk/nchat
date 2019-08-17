@@ -1,50 +1,45 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 import '../style/List.scss';
 import { socket } from '../pages/RoomPage';
 
-const List = props => {
-    const { user } = props;
-    const { id, name, subname, host, limit } = props.roomInfo;
+const List = ({ user, roomInfo, handlePassword, ...props }) => {
+    const [setting, setSetting] = useState(false),
+          [userCount, setUserCount] = useState(0);
 
-    const [setting, setSetting] = useState(false);
-    const [userCount, setUserCount] = useState(0);
-
-    useEffect(() => {
+    useEffect(() => { // userCount가 바뀔 때 마다 반영
         socket.on('userCountChanged', ({ roomId, userCount }) => {
-            console.log(roomId, ':', userCount)
-            if (id === roomId) setUserCount(userCount);
-        })
-    }, []);
-    
+            console.log(roomId, ':', userCount);
+            if (roomInfo.id === roomId) setUserCount(userCount);
+        });
+    }, [userCount]);
 
     const handleClick = e => {
         e.preventDefault();
         setSetting(!setting);
     }
 
-    const handleDelete = async e => {
+    const handleDelete = e => {
         e.preventDefault();
 
-        await axios
-            .delete(`http://localhost:5000/room/${id}`);
+        axios.delete(`http://localhost:5000/room/${roomInfo.id}`);
 
-        return <Redirect to='/' />
+        props.history.push('/list');        
     }
 
     return (
         <Link to={{
-            pathname: `/room/${id}`,
+            pathname: `/room/${roomInfo.id}`,
             state: { room: props.roomInfo }
         }}>
-            <li className='list'>
+            <li className='list' onClick={() => handlePassword(roomInfo)}>
                 <div className='listSetting'>
-                    <span>{id}</span>
-                    {host === user.nick && 
+                    <span>{roomInfo.id}</span>
+                    {roomInfo.host === user.nick && 
                     <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
                     }
                     {setting && 
@@ -53,14 +48,14 @@ const List = props => {
                     </div>
                     }
                 </div>
-                <h2 className='listName'>{name}</h2>
-                <h4 className='listSubname'>{subname}</h4>
+                <h2 className='listName'>{roomInfo.name}</h2>
+                <h4 className='listSubname'>{roomInfo.subname}</h4>
                 <div className='listInfo'>
                     <div>
                         <img src='../../public/images/crown.png' />
-                        <span>{host} 님</span>
+                        <span>{roomInfo.host} 님</span>
                     </div>
-                    <span>{userCount} / {limit}명</span>
+                    <span>{userCount} / {roomInfo.limit}명</span>
                 </div>
             </li>
         </Link>

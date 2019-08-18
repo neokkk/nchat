@@ -14,13 +14,15 @@ $darkgray : #545454;
     nav {
         margin-top: 50px;
 
-        a {
+        .roomLeave {
             font-size: 13px;
             color: $pink;
             text-align: right;
             text-decoration: none;
             float: right;
-            margin-bottom: 5px;
+            border: none;
+            background-color: white;
+            padding: 0;
         }
 
         .roomInfo {

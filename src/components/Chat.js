@@ -3,15 +3,23 @@ import React from 'react';
 
 import '../style/Chat.scss';
 
-const Chat = ({ message, type, user }) => {
+const addZero = num => num < 10 ? '0' + num : num;
+
+const Chat = ({ data }) => {
+    console.log('chat data');
+    console.log(data);
+
+    const hour = new Date(data.createdAt).getHours(),
+          minute = new Date(data.createdAt).getMinutes();
+
     return (
         <>
-        {user === 'SYSTEM' ?
-            <p>{message}</p> :
-            <div className={`chat ${type === 'OTHER' ? 'other' : 'mine'}`}>
-                <span className='chatNick'>{user}</span>
-                <div className='chatMessage'>{message}</div>
-                <span className='chatTime'>작성 시간</span>
+        {data.user === 'SYSTEM' ?
+            <p>{data.input}</p> :
+            <div className={`chat ${data.type === 'OTHER' ? 'other' : 'mine'}`}>
+                <span className='chatNick'>{data.user}</span>
+                <div className='chatMessage'>{data.input}</div>
+                <span className='chatTime'>{addZero(hour) + ':' + addZero(minute)}</span>
             </div>
         }
         </>

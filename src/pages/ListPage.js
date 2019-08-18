@@ -23,7 +23,7 @@ const ListPage = ({ user, ...props }) => {
             .catch(err => console.error(err));
     }
 
-    useEffect(() => { // componentDidMount
+    useEffect(() => { 
         console.log('check!');
         getList();
     }, []);
@@ -32,16 +32,23 @@ const ListPage = ({ user, ...props }) => {
         setModalOpen(!modalOpen);
     }
 
-    const handlePassword = info => {
-        if (info.pwd == null) { // 방 비밀번호가 없으면
-            props.history.push(`/room/${info.id}`);
-        } else {
-            const validation = prompt('비밀번호를 입력하세요');
-            console.log(2);
+    const handleEnter = info => {
+        console.log('handle password info');
+        console.log(info);
 
-            if (validation) {
-                props.history.push(`/room/${info.id}`);
-                console.log(3);
+        if (info.password === null) { // 방 비밀번호가 없으면
+            props.history.push({
+                pathname: `/room/${info.id}`,
+                state: { room: info }
+            });
+        } else { // 비밀번호가 있으면 검증
+            const validation = prompt('비밀번호를 입력하세요');
+
+            if (validation === info.password) {
+                props.history.push({
+                    pathname: `/room/${info.id}`,
+                    state: { room: info }
+                });
             }
         }
     }
@@ -61,9 +68,10 @@ const ListPage = ({ user, ...props }) => {
         axios
             .post('http://localhost:5000/room', { roomName, roomSubname, roomLimit, roomPwd, user })
             .then(result => {
-                console.log('make room result');
-                console.log(result);
-                props.history.push(`/room/${result.data.id}`);
+                props.history.push({
+                    pathname: `/room/${result.data.id}`,
+                    state: { room: result.data }
+                });
             })
             .catch(err => console.error(err));
     }
@@ -103,7 +111,7 @@ const ListPage = ({ user, ...props }) => {
             {list ?
             <ul>
                 {list.map((li, index) => (
-                    <List handlePassword={handlePassword} key={index} roomInfo={li} />
+                    <List handleEnter={handleEnter} key={index} roomInfo={li} />
                 ))}
             </ul>
             :

@@ -1,22 +1,25 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 import '../style/List.scss';
 import { socket } from '../pages/RoomPage';
 
-const List = ({ user, roomInfo, handlePassword, ...props }) => {
+const List = ({ user, roomInfo, handleEnter, ...props }) => {
     const [setting, setSetting] = useState(false),
+          [restrict, setRestrict] = useState(true),
           [userCount, setUserCount] = useState(0);
 
-    useEffect(() => { // userCount가 바뀔 때 마다 반영
+    useEffect(() => { 
         socket.on('userCountChanged', ({ roomId, userCount }) => {
+            console.log(roomInfo);
             console.log(roomId, ':', userCount);
             if (roomInfo.id === roomId) setUserCount(userCount);
+            if (roomInfo.limit === userCount) setRestrict(false);
+            else setRestrict(true);
         });
-    }, [userCount]);
+    }, []);
 
     const handleClick = e => {
         e.preventDefault();
@@ -32,33 +35,28 @@ const List = ({ user, roomInfo, handlePassword, ...props }) => {
     }
 
     return (
-        <Link to={{
-            pathname: `/room/${roomInfo.id}`,
-            state: { room: props.roomInfo }
-        }}>
-            <li className='list' onClick={() => handlePassword(roomInfo)}>
-                <div className='listSetting'>
-                    <span>{roomInfo.id}</span>
-                    {roomInfo.host === user.nick && 
-                    <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
-                    }
-                    {setting && 
-                    <div className='settingInfo'>
-                        <a onClick={handleDelete}>삭제하기</a>
-                    </div>
-                    }
+        <li className='list' onClick={() => { restrict && handleEnter(roomInfo) }}>
+            <div className='listSetting'>
+                <span>{roomInfo.id}</span>
+                {roomInfo.host === user.nick && 
+                <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
+                }
+                {setting && 
+                <div className='settingInfo'>
+                    <a onClick={handleDelete}>삭제하기</a>
                 </div>
-                <h2 className='listName'>{roomInfo.name}</h2>
-                <h4 className='listSubname'>{roomInfo.subname}</h4>
-                <div className='listInfo'>
-                    <div>
-                        <img src='../../public/images/crown.png' />
-                        <span>{roomInfo.host} 님</span>
-                    </div>
-                    <span>{userCount} / {roomInfo.limit}명</span>
+                }
+            </div>
+            <h2 className='listName'>{roomInfo.name}</h2>
+            <h4 className='listSubname'>{roomInfo.subname}</h4>
+            <div className='listInfo'>
+                <div>
+                    <img src='../../public/images/crown.png' />
+                    <span>{roomInfo.host} 님</span>
                 </div>
-            </li>
-        </Link>
+                <span>{userCount} / {roomInfo.limit}명</span>
+            </div>
+        </li>
     );
 }
 

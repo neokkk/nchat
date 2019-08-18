@@ -44,9 +44,9 @@ const JoinPage = props => {
                         <p className='join-error'>{message}</p>
                         <Link to='/'>뒤로가기</Link>
                     </div>
-                    <input type='text' onChange={e => setNick(e.target.value)} value={nick} placeholder='닉네임' required />
+                    <input type='text' onChange={e => setNick(e.target.value)} value={nick} placeholder='닉네임' maxLength='10' required />
                     <input type='email' onChange={e => setEmail(e.target.value)} value={email} placeholder='이메일' required />
-                    <input type='password' onChange={e => setPwd(e.target.value)} value={pwd} placeholder='비밀번호' required />
+                    <input type='password' onChange={e => setPwd(e.target.value)} value={pwd} placeholder='비밀번호' maxLength='20' required />
                     <input type='password' onChange={e => setPwdChk(e.target.value)} value={pwdChk} placeholder='비밀번호 확인' required />
                     <input type='submit' value='회원가입' />
                 </form>

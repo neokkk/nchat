@@ -46,9 +46,6 @@ const RoomPage = props => {
         axios
             .post(`http://localhost:5000/room/${id}/chat`, { user, input })
             .then(result => {
-                console.log('chat result');
-                console.log(result);
-
                 socket.emit('message', { user: { name: user.nick, input }, room: { id, createdAt: result.data.createdAt } });
                 
                 setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick, createdAt: result.data.createdAt }]);

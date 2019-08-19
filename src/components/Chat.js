@@ -6,9 +6,6 @@ import '../style/Chat.scss';
 const addZero = num => num < 10 ? '0' + num : num;
 
 const Chat = ({ data }) => {
-    console.log('chat data');
-    console.log(data);
-
     const hour = new Date(data.createdAt).getHours(),
           minute = new Date(data.createdAt).getMinutes();
 

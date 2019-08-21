@@ -13,6 +13,7 @@ const App = props => {
     console.log(user);
     
     return (
+        <>
             <Switch>
                 {user.isLoggedIn ? <Route path='/' exact component={ListPage} /> : <Route path='/' exact component={Login} />}
                 <Route path='/login' component={Login} />
@@ -21,6 +22,7 @@ const App = props => {
                 <Route path='/room/:id' component={RoomPage} />
                 <Route component={ErrorPage} />
             </Switch>
+        </>
     );
 }
 

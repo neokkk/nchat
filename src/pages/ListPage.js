@@ -28,7 +28,7 @@ const ListPage = ({ user, ...props }) => {
         getList();
     }, []);
     
-    const handleOpenModal = () => {
+    const handleModalOpen = () => {
         setModalOpen(!modalOpen);
     }
 
@@ -83,7 +83,7 @@ const ListPage = ({ user, ...props }) => {
                 <form className='listSearch' onSubmit={handleSearch}>
                     <input type='search' onChange={e => setSearch(e.target.value)} value={search} placeholder='채팅방 검색' />
                 </form>
-                <button onClick={handleOpenModal}>방 만들기</button>
+                <button onClick={handleModalOpen}>방 만들기</button>
             </nav>
             {modalOpen && 
             <form className='listForm' onSubmit={handleMakeRoom}>

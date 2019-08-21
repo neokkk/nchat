@@ -11,6 +11,7 @@ const List = ({ user, roomInfo, handleEnter, ...props }) => {
           [restrict, setRestrict] = useState(true),
           [userCount, setUserCount] = useState(0);
 
+<<<<<<< HEAD
     useEffect(() => { 
         socket.on('userCountChanged', ({ roomId, userCount }) => {
             console.log(roomInfo);
@@ -44,6 +45,28 @@ const List = ({ user, roomInfo, handleEnter, ...props }) => {
                 {setting && 
                 <div className='settingInfo'>
                     <a onClick={handleDelete}>삭제하기</a>
+=======
+    const handleClick = e => {
+        console.log('click setting!');
+        e.preventDefault();
+    }
+
+    return (
+        <Link to={{
+            pathname: `/room/${id}`,
+            state: {
+                room: props.roomInfo
+            }
+        }}>
+            <li className='list'>
+                <div className='listSetting'>
+                    <span>{id}</span>
+                    <img onClick={handleClick} style={{ width: '20px', height: '20px' }} src='../../public/images/setting.png' />
+                    <ul className='listBtn'>
+                        <li>수정</li>
+                        <li>제거</li>
+                    </ul>
+>>>>>>> master
                 </div>
                 }
             </div>

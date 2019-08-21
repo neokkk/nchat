@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import '../style/Join.scss';
 
-const JoinPage = props => {
+const Join = props => {
     const [nick, setNick] = useState(''),
           [email, setEmail] = useState(''),
           [pwd, setPwd] = useState(''),
@@ -34,10 +34,10 @@ const JoinPage = props => {
             console.error(err);
         }
     }
-
+    
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className='joinPage'>
+            <div className='join'>
                 <Link to='/'><img src='../../public/images/ball.png' /></Link>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -55,4 +55,4 @@ const JoinPage = props => {
     );
 }
 
-export default JoinPage;
+export default Join;

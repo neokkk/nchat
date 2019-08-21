@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import '../style/Login.scss';
 import * as userActions from '../store/user';
 
-const LoginPage = ({ UserActions }) => {
-    const [email, setEmail] = useState('nk@naver.com'),
-          [pwd, setPwd] = useState('nkpwd'),
+const Login = ({ UserActions }) => {
+    const [email, setEmail] = useState('test@test.com'),
+          [pwd, setPwd] = useState('test'),
           [message, setMessage] = useState('');
 
 
@@ -41,20 +40,24 @@ const LoginPage = ({ UserActions }) => {
             .then(result => {
                 console.log('google login result');
                 console.log(result);
+            })
+            .catch(err => {
+                console.log('axios error');
+                console.error(err);
             });
     }
 
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className='loginPage'>
+            <div className='login'>
                 <a href='/'><img src='../../public/images/ball.png' /></a>
                 <form onSubmit={handleLocalSubmit}>
-                    {message ? <p className='login-error'>{message}</p> : null}
+                    {/* {message ? <p className='login-error'>{message}</p> : null} */}
                     <input type='email' name='email' onChange={e => setEmail(e.target.value)} value={email} placeholder='이메일' required />
                     <input type='password' name='pwd' onChange={e => setPwd(e.target.value)} value={pwd} placeholder='비밀번호' required />
                     <input type='submit' value='로그인' />
                     <div>
-                        <a href='#' onClick={handleGoogleLogin}>구글 로그인</a>
+                        <a onClick={handleGoogleLogin}>구글 로그인</a>
                         <Link to='/join'>회원가입</Link>
                     </div>
                 </form>
@@ -65,4 +68,4 @@ const LoginPage = ({ UserActions }) => {
 
 export default connect(null, dispatch => ({
     UserActions: bindActionCreators(userActions, dispatch)
-}))(LoginPage);
+}))(Login);

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import '../style/Join.scss';
 
-const JoinPage = () => {
+const Join = props => {
     const [nick, setNick] = useState(''),
           [email, setEmail] = useState(''),
           [pwd, setPwd] = useState(''),
@@ -35,13 +35,13 @@ const JoinPage = () => {
         console.log('message');
         console.log(message);
         
-        location.href = '/';
+        props.history.push('/');
     }
 
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className='joinPage'>
-                <a href='/'><img src='../../public/images/ball.png' /></a>
+            <div className='join'>
+                <Link to='/'><img src='../../public/images/ball.png' /></Link>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <p className='join-error'>{message}</p>
@@ -58,4 +58,4 @@ const JoinPage = () => {
     );
 }
 
-export default JoinPage;
+export default Join;

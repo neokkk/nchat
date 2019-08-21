@@ -1,38 +1,39 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 import Chat from '../components/Chat';
 import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-const socket = io.connect('http://localhost:5000');
+export const socket = io.connect('http://localhost:5000');
 
 const RoomPage = props => {
     const { id, name, subname } = props.location.state.room;
+    const { user } = props;
 
-    const [input, setInput] = useState('');
-    const [inputArray, setInputArray] = useState([]);
+    const [input, setInput] = useState(''),
+          [inputArray, setInputArray] = useState([]);
 
     useEffect(() => {
-        console.log('effect')
         socket.on('userJoin', data => {
-            console.log('join data');
-            console.log(data);
-            setInputArray(prev => [...prev, { input: data.message, type: 'SYSTEM', user: null }]);
+            setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
         });
 
-        socket.emit('join', { user: { name: 'James' }, room: id });
+        socket.emit('join', { user: user.nick, room: id });
 
         socket.on('new message', data => {
-            console.log('other message');
             console.log(data);
-            setInputArray(prev => [...prev, { input: data.input, type: 'NORMAL', user: 'OTHER' }]);
+            setInputArray(prev => [...prev, { input: data.user.input, type: 'OTHER', user: data.user.name, createdAt: data.room.createdAt }]);
+            console.log(inputArray);
         });
 
-        socket.emit('leave', { user: { name: 'James' }, room: id });
+        socket.on('exit', data => {
+            setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
+        });
     }, []);
 
     const handleChange = e => {
@@ -42,17 +43,30 @@ const RoomPage = props => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        setInputArray(inputArray => [...inputArray, { input, type: 'NORMAL', user: 'MINE' }]);
+        axios
+            .post(`http://localhost:5000/room/${id}/chat`, { user, input })
+            .then(result => {
+                socket.emit('message', { user: { name: user.nick, input }, room: { id, createdAt: result.data.createdAt } });
+                
+                setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick, createdAt: result.data.createdAt }]);
+                console.log(inputArray);
+                setInput('');
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
 
-        socket.emit('message', { user: { name: 'James', input }, room: id });
-        setInput('');
+    const handleLeave = () => {
+        socket.emit('leave');
+        props.history.push('/list');
     }
 
     return (
         <div className='roomPage'>
             <Header />
             <nav>
-                <Link to='/list'>방 나가기</Link>
+                <button className='roomLeave' onClick={handleLeave}>방 나가기</button>
                 <div className='roomInfo'>
                     <span>{id}</span>
                     <span>{name}</span>
@@ -60,7 +74,7 @@ const RoomPage = props => {
                 </div>
             </nav>
             <main>
-                {inputArray.map(({ type, input, user }, i) => <Chat key={i} type={type} message={input} user={user} />)}
+                {inputArray.map((inputData, i) => <Chat key={i} data={inputData} />)}
             </main>
             <form onSubmit={handleSubmit}>
                 <input type='text' onChange={handleChange} value={input} placeholder='메세지를 입력하세요' />
@@ -70,4 +84,6 @@ const RoomPage = props => {
     );
 }
 
-export default RoomPage;
+export default connect(state => ({
+    user: state.user.user
+}), null)(RoomPage);

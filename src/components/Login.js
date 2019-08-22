@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -34,30 +35,17 @@ const Login = ({ UserActions }) => {
             });
     }
 
-    const handleGoogleLogin = () => {
-        axios
-            .get('http://localhost:5000/auth/google')
-            .then(result => {
-                console.log('google login result');
-                console.log(result);
-            })
-            .catch(err => {
-                console.log('axios error');
-                console.error(err);
-            });
-    }
-
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className='login'>
                 <a href='/'><img src='../../public/images/ball.png' /></a>
                 <form onSubmit={handleLocalSubmit}>
-                    {/* {message ? <p className='login-error'>{message}</p> : null} */}
+                    {message ? <p className='login-error'>{message}</p> : null}
                     <input type='email' name='email' onChange={e => setEmail(e.target.value)} value={email} placeholder='이메일' required />
                     <input type='password' name='pwd' onChange={e => setPwd(e.target.value)} value={pwd} placeholder='비밀번호' required />
                     <input type='submit' value='로그인' />
                     <div>
-                        <a onClick={handleGoogleLogin}>구글 로그인</a>
+                        <a></a>
                         <Link to='/join'>회원가입</Link>
                     </div>
                 </form>

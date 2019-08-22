@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import '../style/Join.scss';

@@ -12,6 +12,8 @@ const List = ({ user, roomInfo, handleEnter, ...props }) => {
           [userCount, setUserCount] = useState(0);
 
     useEffect(() => { 
+        socket.emit('initialUserCount');
+
         socket.on('userCountChanged', ({ roomId, userCount }) => {
             console.log(roomInfo);
             console.log(roomId, ':', userCount);

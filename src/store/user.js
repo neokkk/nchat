@@ -12,7 +12,7 @@ export const loginRequest = () => ({ type: LOGIN_REQUEST }),
 
 const initialState = {
     fetching: false,
-    isLoggedIn: false,
+    isLoggedIn: !!localStorage.getItem('token'),
     error: false,
     user: null,
 }

@@ -11,7 +11,6 @@ import ErrorPage from '../pages/ErrorPage';
 
 const App = props => {
     const { user } = props;
-    console.log(user);
     
     return (
         <>

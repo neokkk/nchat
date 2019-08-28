@@ -20,10 +20,12 @@ const Login = ({ UserActions }) => {
         axios
             .post('http://localhost:5000/auth/login', { email, pwd })
             .then(result => {
-                const { user, message } = result.data;
+                const { user, token, message } = result.data;
 
                 if (user) { // 로그인된 유저가 있으면 성공
                     UserActions.loginSuccess(user);
+                    localStorage.setItem('token', token);
+                    axios.defaults.headers.common['Authorization'] = token;
                 } else {
                     UserActions.loginFailure();
                     setMessage(message);

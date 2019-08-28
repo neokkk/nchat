@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import axios from 'axios';
@@ -18,6 +18,8 @@ const RoomPage = props => {
     const [input, setInput] = useState(''),
           [inputArray, setInputArray] = useState([]);
 
+    const scrollDown = useRef(null);
+
     useEffect(() => {
         socket.on('userJoin', data => {
             setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
@@ -26,14 +28,15 @@ const RoomPage = props => {
         socket.emit('join', { user: user.nick, room: id });
 
         socket.on('new message', data => {
-            console.log(data);
             setInputArray(prev => [...prev, { input: data.user.input, type: 'OTHER', user: data.user.name, createdAt: data.room.createdAt }]);
-            console.log(inputArray);
+
+            scrollDown.current.scrollIntoView(false);
         });
 
         socket.on('exit', data => {
             setInputArray(prev => [...prev, { input: data, user: 'SYSTEM' }]);
         });
+
     }, []);
 
     const handleChange = e => {
@@ -43,13 +46,15 @@ const RoomPage = props => {
     const handleSubmit = e => {
         e.preventDefault();
 
+        if (input === '') return;
+
         axios
             .post(`http://localhost:5000/room/${id}/chat`, { user, input })
             .then(result => {
                 socket.emit('message', { user: { name: user.nick, input }, room: { id, createdAt: result.data.createdAt } });
+                if(scrollDown.current) scrollDown.current.scrollIntoView(false);
                 
                 setInputArray(inputArray => [...inputArray, { input, type: 'MINE', user: user.nick, createdAt: result.data.createdAt }]);
-                console.log(inputArray);
                 setInput('');
             })
             .catch(err => {
@@ -74,7 +79,16 @@ const RoomPage = props => {
                 </div>
             </nav>
             <main>
-                {inputArray.map((inputData, i) => <Chat key={i} data={inputData} />)}
+                {inputArray.map((inputData, i) => {
+                    // if (i === inputArray[inputArray.length - 1]) 
+                    let innerProps = {};
+                    if ( i === inputArray.length - 1 ) {
+                        innerProps = { ref: scrollDown }
+                        console.log('****');
+                    }
+                    return <Chat key={i} data={inputData} {...innerProps} />
+                    // return <Chat key={i} data={inputData} ref={scrollDown} />
+                })}
             </main>
             <form onSubmit={handleSubmit}>
                 <input type='text' onChange={handleChange} value={input} placeholder='메세지를 입력하세요' />

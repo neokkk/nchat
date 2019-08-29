@@ -9,7 +9,7 @@ import Header from '../components/Header';
 
 import '../style/RoomPage.scss';
 
-export const socket = io.connect('http://localhost:5000');
+export const socket = io.connect('https://gentle-island-44458.herokuapp.com/');
 
 const RoomPage = props => {
     const { id, name, subname } = props.location.state.room;
@@ -49,7 +49,7 @@ const RoomPage = props => {
         if (input === '') return;
 
         axios
-            .post(`http://localhost:5000/room/${id}/chat`, { user, input })
+            .post(`https://gentle-island-44458.herokuapp.com/room/${id}/chat`, { user, input })
             .then(result => {
                 socket.emit('message', { user: { name: user.nick, input }, room: { id, createdAt: result.data.createdAt } });
                 if(scrollDown.current) scrollDown.current.scrollIntoView(false);
@@ -80,14 +80,13 @@ const RoomPage = props => {
             </nav>
             <main>
                 {inputArray.map((inputData, i) => {
-                    // if (i === inputArray[inputArray.length - 1]) 
                     let innerProps = {};
+
                     if ( i === inputArray.length - 1 ) {
                         innerProps = { ref: scrollDown }
-                        console.log('****');
                     }
+                    
                     return <Chat key={i} data={inputData} {...innerProps} />
-                    // return <Chat key={i} data={inputData} ref={scrollDown} />
                 })}
             </main>
             <form onSubmit={handleSubmit}>

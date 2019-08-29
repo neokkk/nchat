@@ -15,7 +15,7 @@ const Header = ({ user, UserActions, ...props }) => {
         console.log('click!');
 
         axios
-            .get('http://localhost:5000/auth/logout')
+            .get('https://gentle-island-44458.herokuapp.com/auth/logout')
             .then(() => {
                 UserActions.logout();
                 props.history.push('/login');

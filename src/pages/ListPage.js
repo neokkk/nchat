@@ -19,7 +19,7 @@ const ListPage = ({ user, ...props }) => {
 
     const getList = () => {
         axios
-            .get('http://localhost:5000/room/list')
+            .get('https://gentle-island-44458.herokuapp.com/room/list')
             .then(lists => setList(lists.data))
             .catch(err => console.error(err));
     }
@@ -58,7 +58,7 @@ const ListPage = ({ user, ...props }) => {
         e.preventDefault();
 
         axios
-            .get(`http://localhost:5000/room/search?query=${search}`)
+            .get(`https://gentle-island-44458.herokuapp.com/room/search?query=${search}`)
             .then(result => setList(result.data))
             .catch(err => console.error(err));
     }
@@ -67,7 +67,7 @@ const ListPage = ({ user, ...props }) => {
         e.preventDefault();
 
         axios
-            .post('http://localhost:5000/room', { roomName, roomSubname, roomLimit, roomPwd, user })
+            .post('https://gentle-island-44458.herokuapp.com/room', { roomName, roomSubname, roomLimit, roomPwd, user })
             .then(result => {
                 props.history.push({
                     pathname: `/room/${result.data.id}`,

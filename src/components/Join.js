@@ -22,7 +22,7 @@ const Join = props => {
             }
 
             await axios
-                .post('http://localhost:5000/auth/join', { nick, email, pwd })
+                .post('https://gentle-island-44458.herokuapp.com/auth/join', { nick, email, pwd })
                 .then(result => {
                     setMessage(result.data.message);
                     props.history.push('/');

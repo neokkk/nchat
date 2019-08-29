@@ -18,7 +18,7 @@ const Login = ({ UserActions }) => {
         e.preventDefault();
 
         axios
-            .post('http://localhost:5000/auth/login', { email, pwd })
+            .post('https://gentle-island-44458.herokuapp.com/auth/login', { email, pwd })
             .then(result => {
                 const { user, token, message } = result.data;
 

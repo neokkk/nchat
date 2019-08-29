@@ -31,7 +31,7 @@ const List = ({ user, roomInfo, handleEnter, ...props }) => {
     const handleDelete = e => {
         e.preventDefault();
 
-        axios.delete(`http://localhost:5000/room/${roomInfo.id}`);
+        axios.delete(`https://gentle-island-44458.herokuapp.com/room/${roomInfo.id}`);
 
         props.history.push('/list');        
     }

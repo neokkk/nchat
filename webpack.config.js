@@ -18,12 +18,6 @@ module.exports = {
         }
       },
       {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
-      },
-      {
         test: /\.html$/,
         use: ['html-loader'],
       },

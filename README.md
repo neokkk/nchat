@@ -28,7 +28,7 @@ Realtime Chatting Service
   > Room Search <br>
   > Delete nweet <br>
   > Locking <br>
-  > Image upload
+  > Image upload <br>
   
  * Chat Page
   > Info <br>

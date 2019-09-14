@@ -31,6 +31,6 @@ Realtime Chatting Service
   > Image upload <br>
   
  * Chat Page
-  > Info <br>
-  > Chat <br>
-  > Exit <br>
+    > Info <br>
+    > Chat <br>
+    > Exit <br>
